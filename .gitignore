@@ -1,0 +1,14 @@
+# volumes
+*.ldf
+*.ndf
+*.mdf
+*.bin
+log
+mongodb_data_container
+postgres
+secrets
+
+.vs
+bin
+obj
+*.csproj.user

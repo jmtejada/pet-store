@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  mssql:
+    container_name: mssql-db
+    hostname: mssql-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: 'Password123'
+      MSSQL_DATA_DIR: /var/opt/mssql/data
+      MSSQL_PID: 'Developer' 
+      MSSQL_TCP_PORT: 1433 
+    ports: 
+      - "1433:1433"
+    networks:
+      - petstore-network
+    restart: always
+    volumes:
+      - ./data:/var/opt/mssql/data
+      - ./log:/var/opt/mssql/log
+      - ./secrets:/var/opt/mssql/secrets
+  mongodb:
+    container_name: mongo-db
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - petstore-network
+    volumes:
+      - './mongodb_data_container:/data/db'
+    restart: always
+  postgresdb:
+    container_name: postgres-db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: 'root'
+      POSTGRES_DB: 'animalsBD'
+      POSTGRES_PASSWORD: 'Password123'
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - petstore-network
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - petstore-network 
+networks:
+  petstore-network:
+    driver: bridge

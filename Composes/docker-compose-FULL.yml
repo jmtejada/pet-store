@@ -1,0 +1,85 @@
+version: '3.8'
+services:
+  mssql:
+    container_name: mssql-db
+    hostname: mssql-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: 'Password123'
+      MSSQL_DATA_DIR: /var/opt/mssql/data
+      MSSQL_PID: 'Developer' 
+      MSSQL_TCP_PORT: 1433 
+    ports: 
+      - "1433:1433"
+    networks:
+      - petstore-network
+    restart: always
+    volumes:
+      - ./data:/var/opt/mssql/data
+      - ./log:/var/opt/mssql/log
+      - ./secrets:/var/opt/mssql/secrets
+  mongodb:
+    container_name: mongo-db
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - petstore-network
+    volumes:
+      - './mongodb_data_container:/data/db'
+    restart: always
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - petstore-network
+  api-services:
+    container_name: services.api.animals
+    image: ${DOCKER_REGISTRY-}services.api.animals
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8093
+    depends_on:
+      - mssql
+    ports:
+      - "8093:8093"
+    networks:
+      - petstore-network
+  api-search:
+    container_name: search.api.animals
+    image: ${DOCKER_REGISTRY-}search.api.animals
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8092
+    depends_on:
+      - mongodb
+    ports:
+      - "8092:8092"
+    networks:
+      - petstore-network
+  api-auth:
+    container_name: auth.api.animals
+    image: ${DOCKER_REGISTRY-}auth.api.animals
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8091
+    ports:
+      - "8091:8091"
+    networks:
+      - petstore-network
+  api-gateway:
+    container_name: gateway.api.animals
+    image: ${DOCKER_REGISTRY-}gateway.api.animals
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8090
+    ports:
+      - "8090:8090"
+    networks:
+      - petstore-network        
+networks:
+  petstore-network:
+    driver: bridge
