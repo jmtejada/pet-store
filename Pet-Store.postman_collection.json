@@ -1,0 +1,256 @@
+{
+	"info": {
+		"_postman_id": "abcfffeb-0f32-4548-adfd-95909e819265",
+		"name": "Pet Store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1318039"
+	},
+	"item": [
+		{
+			"name": "Animal",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(201);\r",
+									"  const responseJson = pm.response.json();\r",
+									"  console.log(responseJson.name.toUpperCase() + \" CREATED!\")\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwibmJmIjoxNzE2ODYxODQ1LCJleHAiOjE3MTc0NjY2NDUsImlhdCI6MTcxNjg2MTg0NSwiaXNzIjoicGV0c3RvcmUuY29tIiwiYXVkIjoiUHVibGljIn0.E6BMvjuU6WuNxUDWOZVk3t0tzhKb7ggrA7XsQQ6m_Ro"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"age\": {{randomAge}},\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"type\": \"{{randomPetType}}\",\r\n    \"breed\": \"Buldog\",\r\n    \"sex\": \"M\",\r\n    \"weight\": {{randomWeight}},\r\n    \"color\": \"{{$randomColor}}\",\r\n    \"description\": \"It is a very good pet\",\r\n    \"coverImageUrl\": \"{{$randomImageUrl}}\",\r\n    \"status\": {{randomPetStatus}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/services/animal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"services",
+								"animal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(201);\r",
+									"  const responseJson = pm.response.json();\r",
+									"  console.log(responseJson.name.toUpperCase() + \" CREATED!\")\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"age\": {{randomAge}},\r\n    \"weight\": {{randomWeight}},\r\n    \"description\": \"It is a very good pet\",   \r\n    \"status\": {{randomPetStatus}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:4450/api/services/animal/19d9d4dd-ee26-4159-be1a-84791c0f3274",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "4450",
+							"path": [
+								"api",
+								"services",
+								"animal",
+								"19d9d4dd-ee26-4159-be1a-84791c0f3274"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/search/animal?page=1&size=4&orderBy=color&orderDir=desc&searchBy=name&searchValue=Lew",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"search",
+								"animal"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "4"
+								},
+								{
+									"key": "orderBy",
+									"value": "color"
+								},
+								{
+									"key": "orderDir",
+									"value": "desc"
+								},
+								{
+									"key": "searchBy",
+									"value": "name"
+								},
+								{
+									"key": "searchValue",
+									"value": "Lew"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/auth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"// Definir una función personalizada que selecciona una mascota al azar de un array\r",
+					"function getRandomPetType() {\r",
+					"    const pets = [\"Dog\", \"Cat\", \"Hamster\", \"Rabbit\", \"Fish\", \"Bird\"];\r",
+					"    const idx = Math.floor(Math.random() * pets.length);\r",
+					"    return pets[idx];\r",
+					"}\r",
+					"pm.globals.set(\"randomPetType\", getRandomPetType());\r",
+					"\r",
+					"function getRandomAge() {\r",
+					"    return Math.floor(Math.random() * 25) + 1;\r",
+					"}\r",
+					"pm.globals.set(\"randomAge\", getRandomAge());\r",
+					"\r",
+					"function getRandomWeight() {\r",
+					"    return Math.floor(Math.random() * 250) + 1;\r",
+					"}\r",
+					"pm.globals.set(\"randomWeight\", getRandomWeight());\r",
+					"\r",
+					"function getRandomPetStatus() {\r",
+					"    return Math.floor(Math.random() * 4) + 1;\r",
+					"}\r",
+					"pm.globals.set(\"randomPetStatus\", getRandomPetStatus());"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
